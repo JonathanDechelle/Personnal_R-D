@@ -64,7 +64,7 @@ namespace TestCase
 
         public void OnExitIntro()
         {
-
+            /* You Quit State for another */
         }
 
         public void OnEnterMainMenu()
@@ -74,12 +74,15 @@ namespace TestCase
 
         public void OnUpdateMainMenu()
         {
-
+            if (KeyboardHelper.KeyPressed(Keys.A))
+            {
+                m_StateMachine.SetState(GameState.Intro);
+            }
         }
 
         public void OnExitMainMenu()
         {
-
+            /* You Quit State for another */
         }
 
         protected override void Initialize()
