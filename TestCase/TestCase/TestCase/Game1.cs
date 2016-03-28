@@ -14,6 +14,7 @@ namespace TestCase
 {
     public enum GameState
     {
+        Editor,
         Intro,
         MainMenu,
         Options,

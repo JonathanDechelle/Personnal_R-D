@@ -5,14 +5,26 @@ namespace TestCase
 #if WINDOWS || XBOX
     static class Program
     {
+        static bool m_TestCase = false;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            if (m_TestCase)
             {
-                game.Run();
+                using (Game1 game = new Game1())
+                {
+                    game.Run();
+                }
+            }
+            else
+            {
+                using (Editor game = new Editor())
+                {
+                    game.Run();
+                }
             }
         }
     }
