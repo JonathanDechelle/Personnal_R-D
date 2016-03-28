@@ -47,6 +47,11 @@ namespace MyGameLibrairy
             m_NextState.m_State = aState;
         }
 
+        public int GetCurrentState()
+        {
+            return Convert.ToInt32(m_CurrentState.m_State);
+        }
+            
         private State GetStateCopy(State aOriginalState)
         {
             State newState = new State();

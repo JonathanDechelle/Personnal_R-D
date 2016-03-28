@@ -22,15 +22,20 @@ namespace TestCase
 
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        StateMachine m_StateMachine;
+        GraphicsDeviceManager m_Graphics;
+        SpriteBatch m_SpriteBatch;
+
         GameState m_CurrentGameState;
+        StateMachine m_StateMachine; 
+        GameScreen m_CurrentGameScreen;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            m_Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            GameScreenMapper.AddEntry(GameState.Intro, new IntroScreen(Services, m_Graphics));
+            GameScreenMapper.AddEntry(GameState.MainMenu, new MainMenuScreen(Services, m_Graphics));
 
             m_StateMachine = new StateMachine();
             m_StateMachine.AddState(GameState.Intro, Status.OnEnter, OnEnterIntro);
@@ -45,38 +50,35 @@ namespace TestCase
 
         public void OnEnterIntro()
         {
-            int a = 3;
+            m_CurrentGameScreen = GameScreen.ChangeScreen(GameScreenMapper.GetValue(GameState.Intro));
         }
 
         public void OnUpdateIntro()
         {
-            int a = 2; 
-            KeyboardHelper.PlayerState = Keyboard.GetState();
             if (KeyboardHelper.KeyPressed(Keys.A))
             {
                 m_StateMachine.SetState(GameState.MainMenu);
             }
-            KeyboardHelper.PlayerStateLast = Keyboard.GetState();
         }
 
         public void OnExitIntro()
         {
-            int a = 3;
+
         }
 
         public void OnEnterMainMenu()
         {
-            int a = 2;
+            m_CurrentGameScreen = GameScreen.ChangeScreen(GameScreenMapper.GetValue(GameState.MainMenu));
         }
 
         public void OnUpdateMainMenu()
         {
-            int a = 2;
+
         }
 
         public void OnExitMainMenu()
         {
-            int a = 2;
+
         }
 
         protected override void Initialize()
@@ -86,7 +88,7 @@ namespace TestCase
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            m_SpriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void UnloadContent()
@@ -95,17 +97,20 @@ namespace TestCase
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+            KeyboardHelper.PlayerState = Keyboard.GetState();
 
             m_StateMachine.Update();
+            m_CurrentGameScreen.Update(gameTime);
+            m_CurrentGameState = (GameState) m_StateMachine.GetCurrentState(); //Just for debug for now
 
+            KeyboardHelper.PlayerStateLast = Keyboard.GetState();
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            m_CurrentGameScreen.Draw(gameTime, m_SpriteBatch);
             base.Draw(gameTime);
         }
     }

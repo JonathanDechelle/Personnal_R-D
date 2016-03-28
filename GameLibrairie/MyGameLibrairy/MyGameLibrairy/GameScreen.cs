@@ -11,17 +11,20 @@ namespace MyGameLibrairy
     /// <summary>
     /// Represent a basic class for every screen that will need the be drawn.
     /// </summary>
-    public abstract class GameScreen
+    public class GameScreen
     {
         protected ContentManager m_Content;
         protected IServiceProvider m_ServiceProvider;
-        public static List<GameScreen> m_ListGameScreen = new List<GameScreen>();
-        public static GraphicsDeviceManager m_GraphicsDeviceManager;
+        protected static List<GameScreen> m_ListGameScreen = new List<GameScreen>();
+        protected static GraphicsDeviceManager m_GraphicsDeviceManager;
 
-        public static void AddScreen(GameScreen Screen)
+        public static GameScreen ChangeScreen(GameScreen Screen)
         {
             Screen.Load();
+            RemoveAllScreens();
             m_ListGameScreen.Add(Screen);
+
+            return Screen;
         }
 
         public static void RemoveScreen(int Pos)
@@ -46,18 +49,22 @@ namespace MyGameLibrairy
         /// Decide if the current GameScreen is active or need to be removed.
         /// </summary>
         public bool Alive = true;
+
         /// <summary>
         /// Tell if the current GameScreen is on the of the screen.
         /// </summary>
         public bool IsOnTop = true;
+
         /// <summary>
         /// Force the screen to idle if the current GameScreen IsOnTop is false.
         /// </summary>
         public bool RequireFocus = true;
+
         /// <summary>
         /// Force the screen to hide if the current GameScreen IsOnTop is false.
         /// </summary>
         public bool RequireDrawFocus = false;
+
         /// <summary>
         /// Decide at which transparancy the current GameScreen need to be drawn(such as popup screen).
         /// </summary>
@@ -79,16 +86,55 @@ namespace MyGameLibrairy
             m_GraphicsDeviceManager = graphics;
             this.m_ServiceProvider = serviceProvider;
         }
-        public abstract void Load();
+
+        public virtual void Load()
+        {
+
+        }
+
         /// <summary>
         /// Override the Update to make your own game logic for the screen.
         /// </summary>
-        public abstract void Update(GameTime gameTime);
+        public virtual void Update(GameTime gameTime)
+        {
+            /*
+            for (int i = 0; i < m_ListGameScreen.Count; i++)
+            {
+                m_ListGameScreen[i].IsOnTop = (i == m_ListGameScreen.Count - 1);
+
+                //If the GameScreen requires to be on top and is on top or doesn't requires focus to be updated.
+                if ((m_ListGameScreen[i].RequireFocus && m_ListGameScreen[i].IsOnTop) || !m_ListGameScreen[i].RequireFocus)
+                {
+                    //Update everything in the GameScreen List and delete it if not Alive.
+                    m_ListGameScreen[i].Update(gameTime);
+                    if (!m_ListGameScreen[i].Alive)
+                    {
+                        m_ListGameScreen.RemoveAt(i--);
+                    }
+                }
+            }*/
+        }
+
         /// <summary>
         /// Override the Update to make your own drawing logic for the screen.
         /// </summary>
-        public abstract void Draw(GameTime gametime,SpriteBatch g);
+        public virtual void Draw(GameTime aGametime, SpriteBatch aSpriteBatch)
+        {
+         /* for (int i = 0; i < m_ListGameScreen.Count; i++)
+            {
+                GameScreen currentScreen = m_ListGameScreen[i];
+                if ((currentScreen.RequireDrawFocus && currentScreen.IsOnTop) || !currentScreen.RequireDrawFocus)
+                {
+                    if (currentScreen.Alive)
+                    {
+                        currentScreen.Draw(aGametime, aSpriteBatch);
+                    }
+                }
+            }
+          * */
+        }
     }
+
     /// <summary>
     /// Represent a temporary GameScreen that will unload every other GameScreen then load a new one.
     /// </summary>
@@ -96,6 +142,7 @@ namespace MyGameLibrairy
     {
         private GameScreen[] Screens;
         private Texture2D BackgroundBuffer;
+
         /// <summary>
         /// Initialize a new LoadScreen that will clear the other screens and load the new one automatically.
         /// </summary>
@@ -103,31 +150,39 @@ namespace MyGameLibrairy
         /// <param name="Screens">An array of GameScreen to create while loading.</param>
         /// <param name="BackgroundBuffer">A background picture to use for the loading screen. Can be null.</param>
         /// <param name="graphics">Pour utiliser tout ce qui attrait a la fenetre</param>
-        public LoadScreen(IServiceProvider serviceProvider, GameScreen[] Screens, Texture2D BackgroundBuffer,GraphicsDeviceManager graphics)
-            : base(serviceProvider,graphics)
+        public LoadScreen(IServiceProvider serviceProvider, GameScreen[] Screens, Texture2D BackgroundBuffer, GraphicsDeviceManager graphics)
+            : base(serviceProvider, graphics)
         {
             this.Screens = Screens;
             this.BackgroundBuffer = BackgroundBuffer;
-            //Remove everything else.
+
             for (int i = 0; i < GameScreen.m_ListGameScreen.Count; i++)
+            {
                 GameScreen.RemoveScreen(i);
+            }
         }
         public override void Load()
-        { }
+        { 
+
+        }
+
         public override void Update(GameTime gameTime)
-        {//If all the GameScreen are unloaded and only this GameScreen is loaded.
+        {
             if (GameScreen.m_ListGameScreen.Count == 1)
-            {//Ask the Game to remove this GameScreen the next time it update.
+            {
                 GameScreen.RemoveScreen(this);
-                //Create and load the pending GameScreen array.
                 for (int i = 0; i < Screens.Length; i++)
-                    GameScreen.AddScreen(Screens[i]);
+                {
+                    GameScreen.ChangeScreen(Screens[i]);
+                }
             }
         }
         public override void Draw(GameTime gametime,SpriteBatch g)
         {
             if (BackgroundBuffer != null)
+            {
                 g.Draw(BackgroundBuffer, new Vector2(0, 0), Color.White);
+            }
            // g.DrawString(Game.fntArial, "Loading", new Vector2(Game.Width - 100, Game.Height - 80), Color.Black);
         }
     }

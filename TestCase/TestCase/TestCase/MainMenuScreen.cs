@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MyGameLibrairy;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace TestCase
+{
+    class MainMenuScreen : GameScreen
+    {
+        public MainMenuScreen(IServiceProvider aServiceProvider, GraphicsDeviceManager aGraphics)
+            : base(aServiceProvider, aGraphics)
+        {
+
+        }
+
+        public override void Load()
+        {
+
+        }
+
+        public override void Update(GameTime aGameTime)
+        {
+            base.Update(aGameTime);
+        }
+
+        public override void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
+        {
+            base.Draw(aGameTime, aSpriteBatch);
+            aSpriteBatch.GraphicsDevice.Clear(Color.Red);
+        }
+    }
+}
