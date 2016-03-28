@@ -5,7 +5,7 @@ namespace TestCase
 #if WINDOWS || XBOX
     static class Program
     {
-        static bool m_TestCase = true;
+        static bool m_TestCase = false;
 
         /// <summary>
         /// The main entry point for the application.
