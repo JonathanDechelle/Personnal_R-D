@@ -20,14 +20,6 @@ namespace TestCase
         GameState m_CurrentGameState;
         StateMachine m_StateMachine;
 
-        Color[] DebugColor = new Color[3] 
-        { 
-            Color.Red, 
-            Color.Green,
-            Color.CornflowerBlue,
-        };
-        Color m_CurrentDebugColor;
-
         public Editor()
         {
             m_Graphics = new GraphicsDeviceManager(this);
@@ -41,7 +33,6 @@ namespace TestCase
             m_StateMachine.AddState(GameState.Editor, Status.OnExit, OnExitEditor);
 
             m_StateMachine.SetState(GameState.Editor);
-            m_CurrentDebugColor = DebugColor[2];
         }
 
         public void OnEnterEditor()
@@ -51,21 +42,7 @@ namespace TestCase
 
         public void OnUpdateEditor()
         {
-            if (MouseHelper.MouseKeyPress(MouseButton.Left))
-            {
-                Console.Write("Mouse Left click");
-                m_CurrentDebugColor = DebugColor[0];
-            }
-            else if (MouseHelper.MouseKeyHold(MouseButton.Right))
-            {
-                Console.Write("Mouse Right hold");
-                m_CurrentDebugColor = DebugColor[1];
-            }
-            else
-            {
-                Console.Write("No button selected");
-                m_CurrentDebugColor = DebugColor[2];
-            }
+
         }
 
         public void OnExitEditor()
@@ -99,7 +76,7 @@ namespace TestCase
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(m_CurrentDebugColor);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
         }
     }
