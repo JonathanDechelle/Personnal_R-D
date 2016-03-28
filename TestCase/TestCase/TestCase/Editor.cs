@@ -33,6 +33,8 @@ namespace TestCase
             m_StateMachine.AddState(GameState.Editor, Status.OnEnter, OnEnterEditor);
             m_StateMachine.AddState(GameState.Editor, Status.OnUpdate, OnUpdateEditor);
             m_StateMachine.AddState(GameState.Editor, Status.OnExit, OnExitEditor);
+
+            IsMouseVisible = true;
         }
 
         public void OnEnterEditor()
@@ -40,8 +42,7 @@ namespace TestCase
             m_CreateButton = new Button(
                 GameRessources.m_EmptyButton,
                 new Vector2(100, 100),
-                1f,
-                50);
+                GraphicsDevice);
         }
 
         public void OnUpdateEditor()
