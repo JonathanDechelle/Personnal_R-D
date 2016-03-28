@@ -20,6 +20,8 @@ namespace TestCase
         GameState m_CurrentGameState;
         StateMachine m_StateMachine;
 
+        Button m_CreateButton;
+
         public Editor()
         {
             m_Graphics = new GraphicsDeviceManager(this);
@@ -31,18 +33,20 @@ namespace TestCase
             m_StateMachine.AddState(GameState.Editor, Status.OnEnter, OnEnterEditor);
             m_StateMachine.AddState(GameState.Editor, Status.OnUpdate, OnUpdateEditor);
             m_StateMachine.AddState(GameState.Editor, Status.OnExit, OnExitEditor);
-
-            m_StateMachine.SetState(GameState.Editor);
         }
 
         public void OnEnterEditor()
         {
-
+            m_CreateButton = new Button(
+                GameRessources.m_EmptyButton,
+                new Vector2(100, 100),
+                1f,
+                50);
         }
 
         public void OnUpdateEditor()
         {
-
+            m_CreateButton.Update();
         }
 
         public void OnExitEditor()
@@ -58,6 +62,9 @@ namespace TestCase
         protected override void LoadContent()
         {
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
+            GameRessources.LoadContent(Content);
+
+            m_StateMachine.SetState(GameState.Editor);
         }
 
         protected override void UnloadContent()
@@ -76,8 +83,16 @@ namespace TestCase
 
         protected override void Draw(GameTime gameTime)
         {
+            m_SpriteBatch.Begin();
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            m_CreateButton.Draw(m_SpriteBatch); // put on a new screen !!
+
+
             base.Draw(gameTime);
+
+            m_SpriteBatch.End();
         }
     }
 }

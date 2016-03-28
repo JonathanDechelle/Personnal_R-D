@@ -15,6 +15,16 @@ namespace MyGameLibrairy
         public static MouseState m_PlayerState;
         public static MouseState m_LastPlayerState;
 
+        public static int MouseX()
+        {
+            return m_PlayerState.X;
+        }
+
+        public static int MouseY()
+        {
+            return m_PlayerState.Y;
+        }
+
         public static bool MouseKeyPress(MouseButton aButton)
         {
             ButtonState buttonState = GetMouseButtonState(aButton, m_PlayerState);

@@ -13,12 +13,12 @@ namespace MyGameLibrairy
     /// </summary>
     public class Button
     {
-        public Vector2 m_Position;
         public bool m_IsClicked;
 
         private Texture2D m_Texture;
+        private Vector2 m_Position;
         private Vector2 m_Size;
-        private Rectangle m_Rectangle;
+        private Rectangle m_ButtonRectangle;
         private Rectangle m_MouseRectangle;
         private Color m_Color = new Color(MAX_COLOR, MAX_COLOR, MAX_COLOR, MAX_COLOR);
         private byte m_ChangeColorSpeed;
@@ -37,27 +37,39 @@ namespace MyGameLibrairy
                 aTexture.Height / aResize);
 
             m_ChangeColorSpeed = aChangeColorSpeed;
+
+            m_MouseRectangle = new Rectangle(-100, -100, PIXEL_SIZE, PIXEL_SIZE);
+            m_ButtonRectangle = new Rectangle((int)m_Position.X, (int)m_Position.Y, (int)m_Size.X, (int)m_Size.Y);
         }
 
-        public void Update(MouseState Mouse)
+        public void Update()
         {
-            m_Rectangle = new Rectangle(
-                (int)m_Position.X,
-                (int)m_Position.Y,
-                (int)m_Size.X,
-                (int)m_Size.Y);
+            m_IsClicked = false;
 
-            m_MouseRectangle = new Rectangle(Mouse.X, Mouse.Y, PIXEL_SIZE, PIXEL_SIZE);
+            m_MouseRectangle.X = MouseHelper.MouseX();
+            m_MouseRectangle.Y = MouseHelper.MouseY();
 
-            if (m_MouseRectangle.Intersects(m_Rectangle))
+            if (m_MouseRectangle.Intersects(m_ButtonRectangle))
             {
-                m_Color.A -= m_ChangeColorSpeed;
-                if (Mouse.LeftButton == ButtonState.Pressed) 
+                if (MouseHelper.MouseKeyPress(MouseButton.Left)) 
                 {
                     m_IsClicked = true;
                 }
             }
-            else if (m_Color.A < MAX_COLOR)
+
+            if (m_ChangeColorSpeed > 0)
+            {
+                ChangeColor();
+            }             
+        }
+
+        public void ChangeColor()
+        {
+            if (m_MouseRectangle.Intersects(m_ButtonRectangle))
+            {
+                m_Color.A -= m_ChangeColorSpeed;
+            }
+            else if (m_ChangeColorSpeed > 0 && m_Color.A < MAX_COLOR)
             {
                 byte newAlpha = m_Color.A;
                 newAlpha += m_ChangeColorSpeed;
@@ -67,18 +79,17 @@ namespace MyGameLibrairy
                 }
 
                 m_Color.A = newAlpha;
-                m_IsClicked = false;
             }
         }
 
-        public void setPosition(Vector2 aPosition)
+        public void SetPosition(Vector2 aPosition)
         {
             m_Position = aPosition;
         }
 
         public void Draw(SpriteBatch aSpritebatch)
         {
-            aSpritebatch.Draw(m_Texture, m_Rectangle, m_Color);
+            aSpritebatch.Draw(m_Texture, m_ButtonRectangle, m_Color);
         }
     }
 }

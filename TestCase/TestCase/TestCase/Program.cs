@@ -28,6 +28,15 @@ namespace TestCase
             }
         }
     }
+
+    public enum GameState
+    {
+        Editor,
+        Intro,
+        MainMenu,
+        Options,
+        Level1,
+    }
 #endif
 }
 

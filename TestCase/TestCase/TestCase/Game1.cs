@@ -12,15 +12,6 @@ using MyGameLibrairy;
 
 namespace TestCase
 {
-    public enum GameState
-    {
-        Editor,
-        Intro,
-        MainMenu,
-        Options,
-        Level1,
-    }
-
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager m_Graphics;
