@@ -14,11 +14,25 @@ namespace MyGameLibrairy
     public class Button
     {
         public bool m_IsClicked;
+        public bool m_IsHold;
         public bool m_IsSelected;
 
+        public enum ButtonSection
+        {
+            Top,
+            Bottom,
+            Left,
+            Right
+        }
+
+        private ButtonSection m_ButtonSectionClicked;
         private Texture2D m_OriginalTexture;
         private Texture2D m_SelectedTexture;
-        private Vector2 m_Position;
+        private Vector2 m_FinalPosition;
+        private Vector2 m_StartPosition;
+        private Vector2 m_MouseOffset;
+        private Vector2 m_StartSize;
+        private Vector2 m_FinalSize;
         private Rectangle m_ButtonRectangle;
         private Rectangle m_MouseRectangle;
         private Color m_Color = new Color(MAX_COLOR, MAX_COLOR, MAX_COLOR, MAX_COLOR);
@@ -28,16 +42,22 @@ namespace MyGameLibrairy
         private const int MAX_COLOR = 255;
         private const int MIN_COLOR = 255;
         private const int CONTOUR_SIZE = 3;
+
+        private const float CENTER = 0.5f;
         
         public Button(Texture2D aTexture, Vector2 aPosition, GraphicsDevice aGraphicsDevice)
         {
             this.m_OriginalTexture = aTexture;
-            m_Position = aPosition;
+            m_StartPosition = aPosition;
+            m_FinalPosition = m_StartPosition;
+
             m_ChangeColorSpeed = 0; /* useless for now*/
 
             m_MouseRectangle = new Rectangle(-100, -100, PIXEL_SIZE, PIXEL_SIZE);
-            m_ButtonRectangle = new Rectangle((int)m_Position.X, (int)m_Position.Y, (int)aTexture.Width, (int)aTexture.Height);
+            m_ButtonRectangle = new Rectangle((int)m_FinalPosition.X, (int)m_FinalPosition.Y, (int)aTexture.Width, (int)aTexture.Height);
 
+            m_StartSize = new Vector2(m_OriginalTexture.Width, m_OriginalTexture.Height);
+            m_FinalSize = m_StartSize;
             BuildSelectedTexture(aGraphicsDevice);
         }
 
@@ -81,9 +101,15 @@ namespace MyGameLibrairy
         public void Update()
         {
             m_IsClicked = false;
+            m_IsHold = false;
 
             m_MouseRectangle.X = MouseHelper.MouseX();
             m_MouseRectangle.Y = MouseHelper.MouseY();
+
+            m_ButtonRectangle.X = (int)(m_StartPosition.X + m_MouseOffset.X);
+            m_ButtonRectangle.Y = (int)(m_StartPosition.Y + m_MouseOffset.Y);
+            m_ButtonRectangle.Width  = (int)m_FinalSize.X;
+            m_ButtonRectangle.Height = (int)m_FinalSize.Y;
 
             m_IsSelected = m_MouseRectangle.Intersects(m_ButtonRectangle);
             if (m_IsSelected)
@@ -92,15 +118,46 @@ namespace MyGameLibrairy
                 {
                     m_IsClicked = true;
                 }
-            }
-            
 
+                //Move the sprite
+                if (MouseHelper.MouseKeyHold(MouseButton.Left))
+                {
+                    m_IsHold = true;
+                    m_MouseOffset = MouseHelper.MousePosition() - (m_StartPosition / CENTER); // get the center of sprite
+                }
+                else
+                {
+                    m_FinalPosition.X = m_ButtonRectangle.X;
+                    m_FinalPosition.Y = m_ButtonRectangle.Y;
+                }
+
+                /* Resize Sprite */
+                if (MouseHelper.MouseKeyPress(MouseButton.Right))
+                {
+                    m_ButtonSectionClicked = GetMoreClosestSide();
+                }
+
+                if (MouseHelper.MouseKeyHold(MouseButton.Right))
+                {
+                    ResizeRectangle();
+                }
+                else
+                {
+                    m_FinalSize.Y = m_ButtonRectangle.Height;
+                }
+            }
+
+
+            #region To DElete
+            /*
             if (m_ChangeColorSpeed > 0)
             {
                 //ChangeColor();
-            }             
+            }    */
+            #endregion
         }
 
+        #region To Delete
         public void ChangeColor()
         {
             if (m_MouseRectangle.Intersects(m_ButtonRectangle))
@@ -119,10 +176,63 @@ namespace MyGameLibrairy
                 m_Color.A = newAlpha;
             }
         }
+        #endregion
 
-        public void SetPosition(Vector2 aPosition)
+        private ButtonSection GetMoreClosestSide()
         {
-            m_Position = aPosition;
+            if (GetMousePositionHeightRatio() > 0.5f)
+            {
+                return ButtonSection.Bottom;
+            }
+            else
+            {
+                return ButtonSection.Top;
+            }
+        }
+
+        private float GetMousePositionHeightRatio()
+        {
+            float posYInRect = MouseHelper.MouseY() - m_FinalPosition.Y;
+            return posYInRect / m_FinalSize.Y;
+        }
+
+        private float GetMousePositionWidthRatio()
+        {
+            float posXInRect = MouseHelper.MouseX() - m_FinalPosition.X;
+            return posXInRect / m_FinalSize.X;
+        }
+
+        private void ResizeRectangle()
+        {
+            int height = m_ButtonRectangle.Height;
+            float posY = m_MouseOffset.Y;
+
+            switch (m_ButtonSectionClicked)
+            {
+                case ButtonSection.Bottom:
+                    height = (int)(m_FinalSize.Y * (GetMousePositionHeightRatio() / CENTER));
+                    
+                    break;
+                case ButtonSection.Top:
+                    posY = MouseHelper.MousePosition().Y - (m_StartPosition.Y / CENTER);
+                    height = (int)(m_FinalSize.Y * (GetMousePositionHeightRatio() / CENTER) + m_StartSize.Y);
+
+                    break;
+            }
+
+            m_FinalSize.Y = height;
+            m_MouseOffset.Y = posY;
+        }
+
+        public override string ToString()
+        {
+            return
+            "RECTANGLE BUTTON " + m_ButtonRectangle.ToString() + "\n" +
+            "FINAL POSITION " + m_FinalPosition + "\n" +
+            "OFFSET MOUSE " + m_MouseOffset + "\n" +
+            "FINAL SIZE " + m_FinalSize + "\n"
+
+            + MouseHelper.ToText();
         }
 
         public void Draw(SpriteBatch aSpritebatch)

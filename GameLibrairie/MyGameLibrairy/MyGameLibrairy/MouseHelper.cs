@@ -25,6 +25,16 @@ namespace MyGameLibrairy
             return m_PlayerState.Y;
         }
 
+        public static Vector2 MousePosition()
+        {
+            return new Vector2(MouseX(), MouseY());
+        }
+
+        public static string ToText()
+        {
+            return "MousePosition = " + MousePosition().ToString();
+        }
+
         public static bool MouseKeyPress(MouseButton aButton)
         {
             ButtonState buttonState = GetMouseButtonState(aButton, m_PlayerState);

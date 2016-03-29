@@ -89,8 +89,8 @@ namespace TestCase
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             m_CreateButton.Draw(m_SpriteBatch); // put on a new screen !!
-
-
+            m_SpriteBatch.DrawString(GameRessources.m_SpriteFont, m_CreateButton.ToString(), Vector2.Zero, Color.Red);
+            
             base.Draw(gameTime);
 
             m_SpriteBatch.End();
