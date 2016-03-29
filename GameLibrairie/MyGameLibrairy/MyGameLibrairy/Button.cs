@@ -30,6 +30,7 @@ namespace MyGameLibrairy
         private Texture2D m_SelectedTexture;
         private Vector2 m_FinalPosition;
         private Vector2 m_StartPosition;
+        private Vector2 m_FirstMousePosition;
         private Vector2 m_MouseOffset;
         private Vector2 m_StartSize;
         private Vector2 m_FinalSize;
@@ -117,13 +118,14 @@ namespace MyGameLibrairy
                 if (MouseHelper.MouseKeyPress(MouseButton.Left)) 
                 {
                     m_IsClicked = true;
+                    m_FirstMousePosition = MouseHelper.MousePosition() - m_MouseOffset;
                 }
 
                 //Move the sprite
                 if (MouseHelper.MouseKeyHold(MouseButton.Left))
                 {
                     m_IsHold = true;
-                    m_MouseOffset = MouseHelper.MousePosition() - (m_StartPosition / CENTER); // get the center of sprite
+                    m_MouseOffset =  MouseHelper.MousePosition() - m_FirstMousePosition; // get the center of sprite
                 }
                 else
                 {
@@ -192,14 +194,17 @@ namespace MyGameLibrairy
 
         private float GetMousePositionHeightRatio()
         {
-            float posYInRect = MouseHelper.MouseY() - m_FinalPosition.Y;
-            return posYInRect / m_FinalSize.Y;
+            return GetMouseCenterVector().Y / m_FinalSize.Y;
         }
 
         private float GetMousePositionWidthRatio()
         {
-            float posXInRect = MouseHelper.MouseX() - m_FinalPosition.X;
-            return posXInRect / m_FinalSize.X;
+            return GetMouseCenterVector().X / m_FinalSize.X;
+        }
+
+        private Vector2 GetMouseCenterVector()
+        {
+            return(new Vector2(MouseHelper.MouseX() - m_FinalPosition.X, MouseHelper.MouseY() - m_FinalPosition.Y));
         }
 
         private void ResizeRectangle()
