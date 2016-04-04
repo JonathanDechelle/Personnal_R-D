@@ -21,6 +21,36 @@ namespace TestCase
         StateMachine m_StateMachine;
 
         Button m_CreateButton;
+        ButtonInfo m_ButtonInfo = null;
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            m_SpriteBatch = new SpriteBatch(GraphicsDevice);
+            GameRessources.LoadContent(Content);
+
+            m_StateMachine.SetState(GameState.Editor);
+        }
+
+        protected override void UnloadContent()
+        {
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            MouseHelper.m_PlayerState = Mouse.GetState();
+            KeyboardHelper.PlayerState = Keyboard.GetState();
+
+            m_StateMachine.Update();
+
+            MouseHelper.m_LastPlayerState = Mouse.GetState();
+            KeyboardHelper.PlayerStateLast = Keyboard.GetState();
+            base.Update(gameTime);
+        }
 
         public Editor()
         {
@@ -47,39 +77,30 @@ namespace TestCase
 
         public void OnUpdateEditor()
         {
-            m_CreateButton.Update();
+            if (m_CreateButton.m_IsToggleActive && m_ButtonInfo == null)
+            {
+                m_ButtonInfo = new ButtonInfo(m_CreateButton);
+            }
+
+            if (m_ButtonInfo != null)
+            {
+                m_ButtonInfo.Update();
+            }
+            else
+            {
+                m_CreateButton.Update();
+            }
+
+            if (KeyboardHelper.KeyPressed(Keys.Enter))
+            {
+                m_ButtonInfo = null;
+                m_CreateButton.m_IsToggleActive = false;
+            }
         }
 
         public void OnExitEditor()
         {
 
-        }
-
-        protected override void Initialize()
-        {
-            base.Initialize();
-        }
-
-        protected override void LoadContent()
-        {
-            m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-            GameRessources.LoadContent(Content);
-
-            m_StateMachine.SetState(GameState.Editor);
-        }
-
-        protected override void UnloadContent()
-        {
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-            MouseHelper.m_PlayerState = Mouse.GetState();
-
-            m_StateMachine.Update();
-
-            MouseHelper.m_LastPlayerState = Mouse.GetState();
-            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -89,8 +110,12 @@ namespace TestCase
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             m_CreateButton.Draw(m_SpriteBatch); // put on a new screen !!
-            m_SpriteBatch.DrawString(GameRessources.m_SpriteFont, m_CreateButton.ToString(), Vector2.Zero, Color.Red);
-            
+            //m_SpriteBatch.DrawString(GameRessources.m_SpriteFont, m_CreateButton.ToString(), Vector2.Zero, Color.Red);
+
+            if (m_ButtonInfo != null)
+            {
+                m_ButtonInfo.Draw(m_SpriteBatch);
+            }
             base.Draw(gameTime);
 
             m_SpriteBatch.End();
