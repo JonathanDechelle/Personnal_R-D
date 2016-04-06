@@ -64,7 +64,7 @@ namespace TestCase
                  aButton.m_GraphicsDevice);
 
             m_SizeXLabel = new Label("Size X ", m_SizeXField.m_Position + m_OffsetLabel);
-            m_ButtonSizeXValue = new Label(aButton.m_Size.X.ToString(), m_SizeXLabel.m_Position + (Vector2.UnitX * OFFSET_RECT_VALUE_X), Color.Blue);
+            m_ButtonSizeXValue = new Label(aButton.SizeX.ToString(), m_SizeXLabel.m_Position + (Vector2.UnitX * OFFSET_RECT_VALUE_X), Color.Blue);
 
             m_OffsetField.Y += OFFSET_FIELD_Y;
 
@@ -74,7 +74,7 @@ namespace TestCase
                  aButton.m_GraphicsDevice);
 
             m_SizeYLabel = new Label("Size Y ", m_SizeYField.m_Position + m_OffsetLabel);
-            m_ButtonSizeYValue = new Label(aButton.m_Size.Y.ToString(), m_SizeYLabel.m_Position + (Vector2.UnitX * OFFSET_RECT_VALUE_X), Color.Blue);
+            m_ButtonSizeYValue = new Label(aButton.SizeY.ToString(), m_SizeYLabel.m_Position + (Vector2.UnitX * OFFSET_RECT_VALUE_X), Color.Blue);
         }
 
         public void Update()
@@ -88,6 +88,16 @@ namespace TestCase
             m_ButtonPositionYValue.m_IsSelected = m_PositionYField.m_IsToggleActive;
             m_ButtonSizeXValue.m_IsSelected = m_SizeXField.m_IsToggleActive;
             m_ButtonSizeYValue.m_IsSelected = m_SizeYField.m_IsToggleActive;
+
+            m_ButtonPositionXValue.Update();
+            m_ButtonPositionYValue.Update();
+            m_ButtonSizeXValue.Update();
+            m_ButtonSizeYValue.Update();
+
+            m_Button.PositionX = m_ButtonPositionXValue.GetNumericValue();
+            m_Button.PositionY = m_ButtonPositionYValue.GetNumericValue();
+            m_Button.SizeX = m_ButtonSizeXValue.GetNumericValue();
+            m_Button.SizeY = m_ButtonSizeYValue.GetNumericValue();
         }
 
         public void Draw(SpriteBatch aSpritebatch)

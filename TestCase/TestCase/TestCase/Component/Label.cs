@@ -21,6 +21,7 @@ namespace TestCase
         
         public Vector2 m_Position;
         public bool m_IsSelected;
+        private bool m_IsNumericLabel = true;
 
         public Label(string aText, Vector2 aPosition)
         {
@@ -39,6 +40,32 @@ namespace TestCase
                 m_Color.G,
                 255 - m_Color.B,
                 255);
+        }
+
+        public void Update()
+        {
+            if (m_IsSelected)
+            {
+                Keys[] keys = KeyboardHelper.KeyPressed();
+                string newKey;
+                int number;
+                bool result;
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    newKey = keys[i].ToString();
+                    newKey = newKey.Replace("D", "");
+                    result = Int32.TryParse(newKey,out number);
+                    if (result)
+                    {
+                        m_Text += newKey;
+                    }
+                }
+            }
+        }
+
+        public int GetNumericValue()
+        {
+            return Convert.ToInt32(m_Text);
         }
 
         public void Draw(SpriteBatch aSpriteBatch)
