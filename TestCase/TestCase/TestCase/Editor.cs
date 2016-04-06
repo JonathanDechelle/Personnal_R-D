@@ -82,20 +82,14 @@ namespace TestCase
                 m_ButtonInfo = new ButtonInfo(m_CreateButton);
             }
 
-            if (m_ButtonInfo != null)
+            bool hasButtonInfo = m_ButtonInfo != null;
+            m_CreateButton.Update(hasButtonInfo);
+            if (hasButtonInfo)
             {
                 m_ButtonInfo.Update();
             }
-            else
-            {
-                m_CreateButton.Update();
-            }
 
-            if (KeyboardHelper.KeyPressed(Keys.Enter))
-            {
-                m_ButtonInfo = null;
-                m_CreateButton.m_IsToggleActive = false;
-            }
+            
         }
 
         public void OnExitEditor()

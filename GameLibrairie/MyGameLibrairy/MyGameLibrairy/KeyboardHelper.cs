@@ -237,7 +237,17 @@ namespace MyGameLibrairy
 
         public static Keys[] KeyPressed()
         {
-            return Keyboard.GetState().GetPressedKeys();
+            Keys[] keys = Keyboard.GetState().GetPressedKeys();
+            List<Keys> resultKey = new List<Keys>();
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if(KeyPressed(keys[i]))
+                {
+                    resultKey.Add(keys[i]);
+                }
+            }
+
+            return resultKey.ToArray();
         }
 
         /// <summary>

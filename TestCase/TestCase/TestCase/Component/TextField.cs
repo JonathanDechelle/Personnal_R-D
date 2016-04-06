@@ -19,9 +19,9 @@ namespace TestCase
             
         }
 
-        public override void Update()
+        public override void Update(bool aIsInEditMode = false)
         {
-            base.Update();
+            base.Update(true);
         }
 
         public override void Draw(SpriteBatch aSpritebatch)

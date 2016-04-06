@@ -16,8 +16,7 @@ namespace MyGameLibrairy
         public bool m_IsClicked;
         public bool m_IsToggleActive;
         public bool m_IsSelected;
-        public Vector2 m_Position;
-        public Vector2 m_Size;
+
         public GraphicsDevice m_GraphicsDevice;
 
         private Texture2D m_OriginalTexture;
@@ -31,15 +30,85 @@ namespace MyGameLibrairy
         private const int MIN_COLOR = 255;
         private const int CONTOUR_SIZE = 3;
 
+        #region get set
+        public Vector2 m_Position
+        {
+            get
+            {
+                return new Vector2(
+                    PositionX,
+                    PositionY
+                    );
+            }
+        }
+
+        public Vector2 m_Size
+        {
+            get
+            {
+                return new Vector2(
+                    SizeX,
+                    SizeY
+                    );
+            }
+        }
+
+        public int PositionX
+        {
+            get
+            {
+                return m_ButtonRectangle.X;
+            }
+            set
+            {
+                m_ButtonRectangle.X = value;
+            }
+        }
+
+        public int PositionY
+        {
+            get
+            {
+                return m_ButtonRectangle.Y;
+            }
+            set
+            {
+                m_ButtonRectangle.Y = value;
+            }
+        }
+
+        public int SizeX
+        {
+            get
+            {
+                return m_ButtonRectangle.Width;
+            }
+            set
+            {
+                m_ButtonRectangle.Width = value;
+            }
+        }
+
+        public int SizeY
+        {
+            get
+            {
+                return m_ButtonRectangle.Height;
+            }
+            set
+            {
+                m_ButtonRectangle.Height = value;
+            }
+        }
+        #endregion
+
         public Button(Texture2D aTexture, Vector2 aPosition, GraphicsDevice aGraphicsDevice)
         {
             this.m_OriginalTexture = aTexture;
-            m_Position = aPosition;
 
             m_MouseRectangle = new Rectangle(-100, -100, PIXEL_SIZE, PIXEL_SIZE);
-            m_ButtonRectangle = new Rectangle((int)m_Position.X, (int)m_Position.Y, (int)aTexture.Width, (int)aTexture.Height);
+            m_ButtonRectangle = new Rectangle((int)aPosition.X, (int)aPosition.Y, (int)aTexture.Width, (int)aTexture.Height);
 
-            m_Size = new Vector2(m_OriginalTexture.Width, m_OriginalTexture.Height);
             m_GraphicsDevice = aGraphicsDevice;
             BuildSelectedTexture(aGraphicsDevice);
         }
@@ -81,26 +150,30 @@ namespace MyGameLibrairy
             m_SelectedTexture.SetData<Color>(dataColors);
         }
 
-        public virtual void Update()
+        public virtual void Update(bool aIsInEditMode = false)
         {
             m_IsClicked = false;
 
             m_MouseRectangle.X = MouseHelper.MouseX();
             m_MouseRectangle.Y = MouseHelper.MouseY();
 
-            m_ButtonRectangle.X = (int) m_Position.X;
-            m_ButtonRectangle.Y = (int) m_Position.Y;
-            m_ButtonRectangle.Width  = (int)m_Size.X;
-            m_ButtonRectangle.Height = (int)m_Size.Y;
+            bool mouseOnButton = m_MouseRectangle.Intersects(m_ButtonRectangle);
+            m_IsSelected = aIsInEditMode ?
+                mouseOnButton || m_IsToggleActive:
+                mouseOnButton;
 
-            m_IsSelected = m_MouseRectangle.Intersects(m_ButtonRectangle) || m_IsToggleActive;
-            if (m_IsSelected)
+            if (mouseOnButton)
             {
-                if (MouseHelper.MouseKeyPress(MouseButton.Left)) 
-                {
-                    m_IsClicked = true;
-                    m_IsToggleActive = !m_IsToggleActive;
-                }
+                ToggleIfMouseLeftClicked();
+            }
+        }
+
+        private void ToggleIfMouseLeftClicked()
+        {
+            if (MouseHelper.MouseKeyPress(MouseButton.Left))
+            {
+                m_IsClicked = true;
+                m_IsToggleActive = !m_IsToggleActive;
             }
         }
 

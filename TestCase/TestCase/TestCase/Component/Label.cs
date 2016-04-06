@@ -59,13 +59,29 @@ namespace TestCase
                     {
                         m_Text += newKey;
                     }
+                    else if (newKey == "Back" && m_Text.Length > 0)
+                    {
+                       m_Text = m_Text.Remove(m_Text.Length - 1, 1);
+                    }
                 }
             }
         }
 
         public int GetNumericValue()
         {
-            return Convert.ToInt32(m_Text);
+            int number;
+            try
+            {
+                number = Convert.ToInt32(m_Text);
+                m_Text = number.ToString();
+                return number;
+            }
+            catch
+            {
+                number = 0;
+                m_Text = number.ToString();
+                return number;
+            }
         }
 
         public void Draw(SpriteBatch aSpriteBatch)
