@@ -22,21 +22,21 @@ namespace MyGameLibrairy
         private const float OFFSET_FIELD_Y = 70;
         private Vector2 m_OffsetField = new Vector2(300, 0);
 
-        public ButtonInfo(Button aButton,SpriteFont aFont, Texture2D aContainerTexture)
+        public ButtonInfo(Button aButtonToUpdate,SpriteFont aFont, Texture2D aContainerTexture)
         {
-            m_Button = aButton;
+            m_Button = aButtonToUpdate;
 
-            Vector2 buttonPosition = aButton.m_Position + m_OffsetField;
-            m_PositionXProperty = new Property(aFont, aContainerTexture, aButton.m_GraphicsDevice, buttonPosition, "Position X", m_Button.m_Position.X);
-
-            buttonPosition.Y += OFFSET_FIELD_Y;
-            m_PositionYProperty = new Property(aFont, aContainerTexture, aButton.m_GraphicsDevice, buttonPosition, "Position Y", m_Button.m_Position.Y);
+            Vector2 buttonPosition = aButtonToUpdate.m_Position + m_OffsetField;
+            m_PositionXProperty = new Property(aFont, aContainerTexture, aButtonToUpdate.m_GraphicsDevice, buttonPosition, "Position X", m_Button.m_Position.X);
 
             buttonPosition.Y += OFFSET_FIELD_Y;
-            m_SizeXProperty = new Property(aFont, aContainerTexture, aButton.m_GraphicsDevice, buttonPosition, "Size X", m_Button.m_Size.X);
+            m_PositionYProperty = new Property(aFont, aContainerTexture, aButtonToUpdate.m_GraphicsDevice, buttonPosition, "Position Y", m_Button.m_Position.Y);
 
             buttonPosition.Y += OFFSET_FIELD_Y;
-            m_SizeYProperty = new Property(aFont, aContainerTexture, aButton.m_GraphicsDevice, buttonPosition, "Size Y", m_Button.m_Size.Y);
+            m_SizeXProperty = new Property(aFont, aContainerTexture, aButtonToUpdate.m_GraphicsDevice, buttonPosition, "Size X", m_Button.m_Size.X);
+
+            buttonPosition.Y += OFFSET_FIELD_Y;
+            m_SizeYProperty = new Property(aFont, aContainerTexture, aButtonToUpdate.m_GraphicsDevice, buttonPosition, "Size Y", m_Button.m_Size.Y);
         }
 
         public void Update()
