@@ -17,14 +17,26 @@ namespace TestCase
         GraphicsDeviceManager m_Graphics;
         SpriteBatch m_SpriteBatch;
 
-        GameState m_CurrentGameState;
+        EGameState m_CurrentGameState;
         StateMachine m_StateMachine;
-
-        EditableButton m_EditableButton;
+        GameScreen m_CurrentGameScreen;
 
         protected override void Initialize()
         {
             base.Initialize();
+        }
+
+        public Editor()
+        {
+            m_Graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+
+            GameScreenMapper.AddEntry(EGameState.Editor, new EditorScreen(Services, m_Graphics));
+
+            m_StateMachine = new StateMachine();
+            m_StateMachine.AddState(EGameState.Editor, Status.OnEnter, OnEnterEditor);
+
+            IsMouseVisible = true;
         }
 
         protected override void LoadContent()
@@ -32,11 +44,14 @@ namespace TestCase
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
             GameRessources.LoadContent(Content);
 
-            m_StateMachine.SetState(GameState.Editor);
+            ScreenSaver.SetRootDirectory(Content);
+            m_StateMachine.SetState(EGameState.Editor);
         }
 
-        protected override void UnloadContent()
+        public void OnEnterEditor()
         {
+            m_CurrentGameScreen = GameScreenMapper.GetValue(EGameState.Editor);
+            m_CurrentGameScreen.Load(GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)
@@ -45,50 +60,16 @@ namespace TestCase
             KeyboardHelper.PlayerState = Keyboard.GetState();
 
             m_StateMachine.Update();
+            m_CurrentGameScreen.Update(gameTime);
 
             MouseHelper.m_LastPlayerState = Mouse.GetState();
             KeyboardHelper.PlayerStateLast = Keyboard.GetState();
             base.Update(gameTime);
         }
 
-        public Editor()
-        {
-            m_Graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-
-            GameScreenMapper.AddEntry(GameState.Editor, new IntroScreen(Services, m_Graphics));
-
-            m_StateMachine = new StateMachine();
-            m_StateMachine.AddState(GameState.Editor, Status.OnEnter, OnEnterEditor);
-            m_StateMachine.AddState(GameState.Editor, Status.OnUpdate, OnUpdateEditor);
-            m_StateMachine.AddState(GameState.Editor, Status.OnExit, OnExitEditor);
-
-            IsMouseVisible = true;
-        }
-
-        public void OnEnterEditor()
-        {
-            Vector2 editableButtonPosition = new Vector2(100, 100);
-            m_EditableButton = new EditableButton(editableButtonPosition, GraphicsDevice);
-        }
-
-        public void OnUpdateEditor()
-        {
-            m_EditableButton.Update();
-
-            m_SpriteBatch.Begin();
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            m_EditableButton.Draw(m_SpriteBatch);
-            m_SpriteBatch.End();
-        }
-
-        public void OnExitEditor()
-        {
-
-        }
-
         protected override void Draw(GameTime gameTime)
         {
+            m_CurrentGameScreen.Draw(gameTime, m_SpriteBatch);
             base.Draw(gameTime);
         }
     }

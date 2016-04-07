@@ -92,6 +92,11 @@ namespace MyGameLibrairy
 
         }
 
+        public virtual void Load(GraphicsDevice aGraphicDevice)
+        {
+
+        }
+
         /// <summary>
         /// Override the Update to make your own game logic for the screen.
         /// </summary>

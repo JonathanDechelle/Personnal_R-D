@@ -29,7 +29,7 @@ namespace TestCase
         }
     }
 
-    public enum GameState
+    public enum EGameState
     {
         Editor,
         Intro,

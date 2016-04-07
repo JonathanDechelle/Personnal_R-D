@@ -17,7 +17,7 @@ namespace TestCase
         GraphicsDeviceManager m_Graphics;
         SpriteBatch m_SpriteBatch;
 
-        GameState m_CurrentGameState;
+        EGameState m_CurrentGameState;
         StateMachine m_StateMachine; 
         GameScreen m_CurrentGameScreen;
 
@@ -26,30 +26,30 @@ namespace TestCase
             m_Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            GameScreenMapper.AddEntry(GameState.Intro, new IntroScreen(Services, m_Graphics));
-            GameScreenMapper.AddEntry(GameState.MainMenu, new MainMenuScreen(Services, m_Graphics));
+            GameScreenMapper.AddEntry(EGameState.Intro, new IntroScreen(Services, m_Graphics));
+            GameScreenMapper.AddEntry(EGameState.MainMenu, new MainMenuScreen(Services, m_Graphics));
 
             m_StateMachine = new StateMachine();
-            m_StateMachine.AddState(GameState.Intro, Status.OnEnter, OnEnterIntro);
-            m_StateMachine.AddState(GameState.Intro, Status.OnUpdate, OnUpdateIntro);
-            m_StateMachine.AddState(GameState.Intro, Status.OnExit, OnExitIntro);
-            m_StateMachine.AddState(GameState.MainMenu, Status.OnEnter, OnEnterMainMenu);
-            m_StateMachine.AddState(GameState.MainMenu, Status.OnUpdate, OnUpdateMainMenu);
-            m_StateMachine.AddState(GameState.MainMenu, Status.OnExit, OnExitMainMenu);
+            m_StateMachine.AddState(EGameState.Intro, Status.OnEnter, OnEnterIntro);
+            m_StateMachine.AddState(EGameState.Intro, Status.OnUpdate, OnUpdateIntro);
+            m_StateMachine.AddState(EGameState.Intro, Status.OnExit, OnExitIntro);
+            m_StateMachine.AddState(EGameState.MainMenu, Status.OnEnter, OnEnterMainMenu);
+            m_StateMachine.AddState(EGameState.MainMenu, Status.OnUpdate, OnUpdateMainMenu);
+            m_StateMachine.AddState(EGameState.MainMenu, Status.OnExit, OnExitMainMenu);
 
-            m_StateMachine.SetState(GameState.Intro);
+            m_StateMachine.SetState(EGameState.Intro);
         }
 
         public void OnEnterIntro()
         {
-            m_CurrentGameScreen = GameScreen.ChangeScreen(GameScreenMapper.GetValue(GameState.Intro));
+            m_CurrentGameScreen = GameScreen.ChangeScreen(GameScreenMapper.GetValue(EGameState.Intro));
         }
 
         public void OnUpdateIntro()
         {
             if (KeyboardHelper.KeyPressed(Keys.A))
             {
-                m_StateMachine.SetState(GameState.MainMenu);
+                m_StateMachine.SetState(EGameState.MainMenu);
             }
         }
 
@@ -60,14 +60,14 @@ namespace TestCase
 
         public void OnEnterMainMenu()
         {
-            m_CurrentGameScreen = GameScreen.ChangeScreen(GameScreenMapper.GetValue(GameState.MainMenu));
+            m_CurrentGameScreen = GameScreen.ChangeScreen(GameScreenMapper.GetValue(EGameState.MainMenu));
         }
 
         public void OnUpdateMainMenu()
         {
             if (KeyboardHelper.KeyPressed(Keys.A))
             {
-                m_StateMachine.SetState(GameState.Intro);
+                m_StateMachine.SetState(EGameState.Intro);
             }
         }
 
@@ -96,7 +96,7 @@ namespace TestCase
 
             m_StateMachine.Update();
             m_CurrentGameScreen.Update(gameTime);
-            m_CurrentGameState = (GameState) m_StateMachine.GetCurrentState(); //Just for debug for now
+            m_CurrentGameState = (EGameState) m_StateMachine.GetCurrentState(); //Just for debug for now
 
             KeyboardHelper.PlayerStateLast = Keyboard.GetState();
             base.Update(gameTime);
