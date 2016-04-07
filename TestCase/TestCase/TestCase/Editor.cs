@@ -75,6 +75,11 @@ namespace TestCase
         public void OnUpdateEditor()
         {
             m_EditableButton.Update();
+
+            m_SpriteBatch.Begin();
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            m_EditableButton.Draw(m_SpriteBatch);
+            m_SpriteBatch.End();
         }
 
         public void OnExitEditor()
@@ -84,14 +89,7 @@ namespace TestCase
 
         protected override void Draw(GameTime gameTime)
         {
-            m_SpriteBatch.Begin();
-
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            m_EditableButton.Draw(m_SpriteBatch);
-      
             base.Draw(gameTime);
-
-            m_SpriteBatch.End();
         }
     }
 }
