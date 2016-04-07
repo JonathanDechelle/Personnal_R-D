@@ -79,7 +79,7 @@ namespace TestCase
         {
             if (m_CreateButton.m_IsToggleActive && m_ButtonInfo == null)
             {
-                m_ButtonInfo = new ButtonInfo(m_CreateButton);
+                m_ButtonInfo = new ButtonInfo(m_CreateButton, GameRessources.m_SpriteFont, GameRessources.m_EmptyTextField);
             }
 
             bool hasButtonInfo = m_ButtonInfo != null;

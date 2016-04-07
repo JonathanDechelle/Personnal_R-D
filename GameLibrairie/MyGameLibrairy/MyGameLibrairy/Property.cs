@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MyGameLibrairy;
 
-namespace TestCase
+namespace MyGameLibrairy
 {
     /// <summary>
     /// Classe servant à crée des infos sur les boutons
@@ -20,19 +20,25 @@ namespace TestCase
 
         private const float OFFSET_RECT_VALUE_X = 150f;
         private Vector2 m_OffsetLabel = new Vector2(10, 5);
+        private SpriteFont m_Font;
 
-        public Property(GraphicsDevice aGraphicDevice, Vector2 aPosition, string aTitleValue, float aInitialValue = 0)
+        public Property(SpriteFont aFont,
+                        Texture2D aContainerTexture, 
+                        GraphicsDevice aGraphicDevice, 
+                        Vector2 aPosition, 
+                        string aTitleValue, 
+                        float aInitialValue = 0)
         {
             m_ValueContainer = new TextField(
-                  GameRessources.m_EmptyTextField,
+                  aContainerTexture,
                   aPosition,
                   aGraphicDevice);
 
             Vector2 titleAlignement = m_ValueContainer.m_Position + m_OffsetLabel;
-            m_TitleLabel = new Label(aTitleValue, titleAlignement);
+            m_TitleLabel = new Label(aTitleValue, titleAlignement, aFont);
 
             Vector2 valueAlignement = m_TitleLabel.m_Position + (Vector2.UnitX * OFFSET_RECT_VALUE_X);
-            m_ValueLabel = new Label(aInitialValue.ToString(), valueAlignement, Color.Blue);  
+            m_ValueLabel = new Label(aInitialValue.ToString(), valueAlignement, aFont, Color.Blue);  
         }
 
         public void Update()

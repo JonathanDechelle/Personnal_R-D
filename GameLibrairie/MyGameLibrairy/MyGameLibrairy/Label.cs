@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MyGameLibrairy;
 
-namespace TestCase
+namespace MyGameLibrairy
 {
     /// <summary>
     /// Classe servant à crée labels
@@ -22,17 +22,19 @@ namespace TestCase
         public Vector2 m_Position;
         public bool m_IsSelected;
         private bool m_IsNumericLabel = true;
+        private SpriteFont m_Font;
 
-        public Label(string aText, Vector2 aPosition)
+        public Label(string aText, Vector2 aPosition, SpriteFont aFont)
         {
             m_Text = aText;
             m_Position = aPosition;
             m_Color = Color.Black;
+            m_Font = aFont;
             m_InvertedColor = Color.White;
         }
 
-        public Label(string aText, Vector2 aPosition, Color aColor)
-            :this(aText,aPosition)
+        public Label(string aText, Vector2 aPosition, SpriteFont aFont, Color aColor)
+            :this(aText,aPosition, aFont)
         {
             m_Color = aColor;
             m_InvertedColor = new Color(
@@ -90,7 +92,7 @@ namespace TestCase
             m_InvertedColor :
             m_Color;
 
-            aSpriteBatch.DrawString(GameRessources.m_SpriteFont, m_Text, m_Position, aColor);
+            aSpriteBatch.DrawString(m_Font, m_Text, m_Position, aColor);
         }
     }
 }

@@ -5,9 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MyGameLibrairy;
 
-namespace TestCase
+namespace MyGameLibrairy
 {
     /// <summary>
     /// Classe servant à crée des infos sur les boutons
@@ -23,21 +22,21 @@ namespace TestCase
         private const float OFFSET_FIELD_Y = 70;
         private Vector2 m_OffsetField = new Vector2(300, 0);
 
-        public ButtonInfo(Button aButton)
+        public ButtonInfo(Button aButton,SpriteFont aFont, Texture2D aContainerTexture)
         {
             m_Button = aButton;
 
             Vector2 buttonPosition = aButton.m_Position + m_OffsetField;
-            m_PositionXProperty = new Property(aButton.m_GraphicsDevice, buttonPosition, "Position X", m_Button.m_Position.X);
+            m_PositionXProperty = new Property(aFont, aContainerTexture, aButton.m_GraphicsDevice, buttonPosition, "Position X", m_Button.m_Position.X);
 
             buttonPosition.Y += OFFSET_FIELD_Y;
-            m_PositionYProperty = new Property(aButton.m_GraphicsDevice, buttonPosition, "Position Y", m_Button.m_Position.Y);
+            m_PositionYProperty = new Property(aFont, aContainerTexture, aButton.m_GraphicsDevice, buttonPosition, "Position Y", m_Button.m_Position.Y);
 
             buttonPosition.Y += OFFSET_FIELD_Y;
-            m_SizeXProperty = new Property(aButton.m_GraphicsDevice, buttonPosition, "Size X", m_Button.m_Size.X);
+            m_SizeXProperty = new Property(aFont, aContainerTexture, aButton.m_GraphicsDevice, buttonPosition, "Size X", m_Button.m_Size.X);
 
             buttonPosition.Y += OFFSET_FIELD_Y;
-            m_SizeYProperty = new Property(aButton.m_GraphicsDevice, buttonPosition, "Size Y", m_Button.m_Size.Y);
+            m_SizeYProperty = new Property(aFont, aContainerTexture, aButton.m_GraphicsDevice, buttonPosition, "Size Y", m_Button.m_Size.Y);
         }
 
         public void Update()

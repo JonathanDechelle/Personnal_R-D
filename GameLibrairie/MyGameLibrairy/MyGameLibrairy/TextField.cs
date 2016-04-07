@@ -5,9 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MyGameLibrairy;
 
-namespace TestCase
+namespace MyGameLibrairy
 {
     /// <summary>
     /// Classe servant à crée des Cases de textes
