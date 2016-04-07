@@ -20,8 +20,7 @@ namespace TestCase
         GameState m_CurrentGameState;
         StateMachine m_StateMachine;
 
-        Button m_CreateButton;
-        ButtonInfo m_ButtonInfo = null;
+        EditableButton m_EditableButton;
 
         protected override void Initialize()
         {
@@ -69,27 +68,13 @@ namespace TestCase
 
         public void OnEnterEditor()
         {
-            m_CreateButton = new Button(
-                GameRessources.m_EmptyButton,
-                new Vector2(100, 100),
-                GraphicsDevice);
+            Vector2 editableButtonPosition = new Vector2(100, 100);
+            m_EditableButton = new EditableButton(editableButtonPosition, GraphicsDevice);
         }
 
         public void OnUpdateEditor()
         {
-            if (m_CreateButton.m_IsToggleActive && m_ButtonInfo == null)
-            {
-                m_ButtonInfo = new ButtonInfo(m_CreateButton, GameRessources.m_SpriteFont, GameRessources.m_EmptyTextField);
-            }
-
-            bool hasButtonInfo = m_ButtonInfo != null;
-            m_CreateButton.Update(hasButtonInfo);
-            if (hasButtonInfo)
-            {
-                m_ButtonInfo.Update();
-            }
-
-            
+            m_EditableButton.Update();
         }
 
         public void OnExitEditor()
@@ -102,14 +87,8 @@ namespace TestCase
             m_SpriteBatch.Begin();
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            m_CreateButton.Draw(m_SpriteBatch); // put on a new screen !!
-            //m_SpriteBatch.DrawString(GameRessources.m_SpriteFont, m_CreateButton.ToString(), Vector2.Zero, Color.Red);
-
-            if (m_ButtonInfo != null)
-            {
-                m_ButtonInfo.Draw(m_SpriteBatch);
-            }
+            m_EditableButton.Draw(m_SpriteBatch);
+      
             base.Draw(gameTime);
 
             m_SpriteBatch.End();
