@@ -19,7 +19,6 @@ namespace TestCase
 
         EGameState m_CurrentGameState;
         StateMachine m_StateMachine;
-        GameScreen m_CurrentGameScreen;
 
         protected override void Initialize()
         {
@@ -50,8 +49,7 @@ namespace TestCase
 
         public void OnEnterEditor()
         {
-            m_CurrentGameScreen = GameScreenMapper.GetValue(EGameState.Editor);
-            m_CurrentGameScreen.Load(GraphicsDevice);
+            GameScreenManager.ShowScreen(GameScreenMapper.GetValue(EGameState.Editor), GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)
@@ -60,7 +58,7 @@ namespace TestCase
             KeyboardHelper.PlayerState = Keyboard.GetState();
 
             m_StateMachine.Update();
-            m_CurrentGameScreen.Update(gameTime);
+            GameScreenManager.Update(gameTime);
 
             MouseHelper.m_LastPlayerState = Mouse.GetState();
             KeyboardHelper.PlayerStateLast = Keyboard.GetState();
@@ -69,7 +67,7 @@ namespace TestCase
 
         protected override void Draw(GameTime gameTime)
         {
-            m_CurrentGameScreen.Draw(gameTime, m_SpriteBatch);
+            GameScreenManager.Draw(gameTime, m_SpriteBatch);
             base.Draw(gameTime);
         }
     }

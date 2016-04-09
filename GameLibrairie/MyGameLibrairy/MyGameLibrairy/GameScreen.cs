@@ -15,40 +15,7 @@ namespace MyGameLibrairy
     {
         protected ContentManager m_Content;
         protected IServiceProvider m_ServiceProvider;
-        protected static List<GameScreen> m_ListGameScreen = new List<GameScreen>();
         protected static GraphicsDeviceManager m_GraphicsDeviceManager;
-
-        public static GameScreen ChangeScreen(GameScreen Screen)
-        {
-            Screen.Load();
-            RemoveAllScreens();
-            m_ListGameScreen.Add(Screen);
-
-            return Screen;
-        }
-
-        public static void RemoveScreen(int Pos)
-        {
-            m_ListGameScreen[Pos].Alive = false;
-        }
-
-        public static void RemoveScreen(GameScreen Screen)
-        {
-            Screen.Alive = false;
-        }
-
-        public static void RemoveAllScreens(GameScreen ExcludedScreen = null)
-        {
-            for (int S = 0; S < m_ListGameScreen.Count; S++)
-                if (m_ListGameScreen[S] != ExcludedScreen)
-                    m_ListGameScreen[S].Alive = false;
-        }
-
-
-        /// <summary>
-        /// Decide if the current GameScreen is active or need to be removed.
-        /// </summary>
-        public bool Alive = true;
 
         /// <summary>
         /// Tell if the current GameScreen is on the of the screen.
@@ -87,12 +54,7 @@ namespace MyGameLibrairy
             this.m_ServiceProvider = serviceProvider;
         }
 
-        public virtual void Load()
-        {
-
-        }
-
-        public virtual void Load(GraphicsDevice aGraphicDevice)
+        public virtual void Load(GraphicsDevice aGraphicDevice = null)
         {
 
         }
@@ -161,18 +123,19 @@ namespace MyGameLibrairy
             this.Screens = Screens;
             this.BackgroundBuffer = BackgroundBuffer;
 
+            /*
             for (int i = 0; i < GameScreen.m_ListGameScreen.Count; i++)
             {
                 GameScreen.RemoveScreen(i);
-            }
+            }*/
         }
-        public override void Load()
+        public override void Load(GraphicsDevice aGraphicDevice = null)
         { 
 
         }
 
         public override void Update(GameTime gameTime)
-        {
+        {/*
             if (GameScreen.m_ListGameScreen.Count == 1)
             {
                 GameScreen.RemoveScreen(this);
@@ -180,7 +143,7 @@ namespace MyGameLibrairy
                 {
                     GameScreen.ChangeScreen(Screens[i]);
                 }
-            }
+            }*/
         }
         public override void Draw(GameTime gametime,SpriteBatch g)
         {

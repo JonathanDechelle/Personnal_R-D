@@ -19,7 +19,6 @@ namespace TestCase
 
         EGameState m_CurrentGameState;
         StateMachine m_StateMachine; 
-        GameScreen m_CurrentGameScreen;
 
         public Game1()
         {
@@ -42,7 +41,7 @@ namespace TestCase
 
         public void OnEnterIntro()
         {
-            m_CurrentGameScreen = GameScreen.ChangeScreen(GameScreenMapper.GetValue(EGameState.Intro));
+            GameScreenManager.ShowScreen(GameScreenMapper.GetValue(EGameState.Intro));
         }
 
         public void OnUpdateIntro()
@@ -51,16 +50,21 @@ namespace TestCase
             {
                 m_StateMachine.SetState(EGameState.MainMenu);
             }
+
+            if (KeyboardHelper.KeyPressed(Keys.W))
+            {
+                GameScreenManager.HideScreen(GameScreenMapper.GetValue(EGameState.Intro));
+            }
         }
 
         public void OnExitIntro()
         {
-            /* You Quit State for another */
+            GameScreenManager.HideScreen(GameScreenMapper.GetValue(EGameState.Intro));
         }
 
         public void OnEnterMainMenu()
         {
-            m_CurrentGameScreen = GameScreen.ChangeScreen(GameScreenMapper.GetValue(EGameState.MainMenu));
+            GameScreenManager.ShowScreen(GameScreenMapper.GetValue(EGameState.MainMenu));
         }
 
         public void OnUpdateMainMenu()
@@ -69,11 +73,16 @@ namespace TestCase
             {
                 m_StateMachine.SetState(EGameState.Intro);
             }
+
+            if (KeyboardHelper.KeyPressed(Keys.W))
+            {
+                GameScreenManager.HideScreen(GameScreenMapper.GetValue(EGameState.MainMenu));
+            }
         }
 
         public void OnExitMainMenu()
         {
-            /* You Quit State for another */
+            GameScreenManager.HideScreen(GameScreenMapper.GetValue(EGameState.MainMenu));
         }
 
         protected override void Initialize()
@@ -95,8 +104,9 @@ namespace TestCase
             KeyboardHelper.PlayerState = Keyboard.GetState();
 
             m_StateMachine.Update();
-            m_CurrentGameScreen.Update(gameTime);
             m_CurrentGameState = (EGameState) m_StateMachine.GetCurrentState(); //Just for debug for now
+
+            GameScreenManager.Update(gameTime);
 
             KeyboardHelper.PlayerStateLast = Keyboard.GetState();
             base.Update(gameTime);
@@ -105,7 +115,9 @@ namespace TestCase
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            m_CurrentGameScreen.Draw(gameTime, m_SpriteBatch);
+
+            GameScreenManager.Draw(gameTime, m_SpriteBatch);
+
             base.Draw(gameTime);
         }
     }

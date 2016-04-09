@@ -20,7 +20,7 @@ namespace MyGameLibrairy
 
         }
 
-        public override void Load()
+        public override void Load(GraphicsDevice aGraphicDevice = null)
         {
           
         }
