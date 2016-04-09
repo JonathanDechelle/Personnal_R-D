@@ -49,7 +49,8 @@ namespace TestCase
 
         public void OnEnterEditor()
         {
-            GameScreenManager.ShowScreen(GameScreenMapper.GetValue(EGameState.Editor), GraphicsDevice);
+            GameScreen editorScreen = GameScreenManager.ShowScreen(GameScreenMapper.GetValue(EGameState.Editor), GraphicsDevice);
+            ScreenSaver.SaveScreenContent(editorScreen);
         }
 
         protected override void Update(GameTime gameTime)
