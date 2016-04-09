@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TestCase
 {
-    class EditorScreen : GameScreen
+    public class EditorScreen : GameScreen
     {
         private EditableButton m_EditableButton;
         public EditorScreen(IServiceProvider aServiceProvider, GraphicsDeviceManager aGraphics)
