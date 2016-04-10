@@ -61,6 +61,11 @@ namespace TestCase
             m_StateMachine.Update();
             GameScreenManager.Update(gameTime);
 
+            if (KeyboardHelper.KeyPressed(Keys.J))
+            {
+                ScreenSaver.SaveScreenContent(GameScreenManager.GetCurrentScreen());
+            }
+
             MouseHelper.m_LastPlayerState = Mouse.GetState();
             KeyboardHelper.PlayerStateLast = Keyboard.GetState();
             base.Update(gameTime);

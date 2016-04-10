@@ -11,7 +11,6 @@ namespace TestCase
     public class EditorScreen : GameScreen
     {
         public EditableButton m_EditableButton;
-        public EditableButton m_EditableButton2;
         public EditorScreen(IServiceProvider aServiceProvider, GraphicsDeviceManager aGraphics)
             : base(aServiceProvider, aGraphics)
         {
@@ -21,9 +20,8 @@ namespace TestCase
         {
             Vector2 editableButtonPosition = new Vector2(100, 100);
             m_EditableButton = new EditableButton(editableButtonPosition, aGraphicDevice);
-            m_EditableButton2 = new EditableButton(editableButtonPosition, aGraphicDevice);
+
             EditorManager.RegisterButton(m_EditableButton, this);
-            EditorManager.RegisterButton(m_EditableButton2, this);
         }
 
         public override void Update(GameTime aGameTime)

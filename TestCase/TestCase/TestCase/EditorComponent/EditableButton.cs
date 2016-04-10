@@ -10,8 +10,24 @@ namespace TestCase
 {
     public class EditableButton
     {
-        Button m_CreateButton;
-        ButtonInfo m_ButtonInfo = null;
+        #region Serialization
+        public class SerializedData
+        {
+            public Vector2 Position;
+            public Vector2 Size;
+
+            public SerializedData(){}
+        }
+        #endregion
+
+        private Button m_CreateButton;
+        private ButtonInfo m_ButtonInfo;
+        public SerializedData ButtonData;
+
+        public EditableButton()
+        {
+            ButtonData = new SerializedData();
+        }
 
         public EditableButton(Vector2 aPosition, GraphicsDevice aGraphicDevice)
         {
@@ -19,6 +35,10 @@ namespace TestCase
                GameRessources.m_EmptyButton,
                aPosition,
                aGraphicDevice);
+
+            ButtonData = new SerializedData();
+            ButtonData.Size = m_CreateButton.m_Size;
+            ButtonData.Position = m_CreateButton.m_Position;
         }
 
         public void Update()
@@ -44,6 +64,8 @@ namespace TestCase
             }
 
             m_CreateButton.Update(hasButtonInfo);
+            ButtonData.Size = m_CreateButton.m_Size;
+            ButtonData.Position = m_CreateButton.m_Position;
         }
 
         public void Draw(SpriteBatch aSpritebatch)

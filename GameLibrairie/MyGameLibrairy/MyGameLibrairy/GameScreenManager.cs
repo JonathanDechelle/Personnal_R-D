@@ -52,6 +52,11 @@ namespace MyGameLibrairy
             }
         }
 
+        public static GameScreen GetCurrentScreen()
+        {
+            return m_CurrentGameScreen;
+        }
+
         public static GameScreen GetScreen(GameScreen aScreen)
         {
             if (ContainScreen(aScreen))

@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Microsoft.Xna.Framework.Content;
-using System.Reflection;
+﻿using System.Reflection;
 using MyGameLibrairy;
+using Microsoft.Xna.Framework.Content;
+using System.Xml.Serialization;
+using System.Xml;
+using System.IO;
+using System.Collections.Generic;
+using System;
+using System.Text;
 
 namespace TestCase
 {
@@ -32,14 +33,27 @@ namespace TestCase
             string Text = "";
             for (int i = 0; i < buttons.Count; i++)
             {
+                SerializeScreen(aScreen, buttons[i]);
+                /*
                 FieldInfo[] fields = buttons[i].GetType().GetFields(m_BindingFlags);
                 for (int j = 0; j < fields.Length; j++)
                 {
                     Text += GetFieldNameAndValue(fields[j], buttons[i]);
-                }
+                }*/
             }
+        }
 
-            File.WriteAllText(m_ScreenRootDirectory + "Testallo.txt", Text);
+        private static void SerializeScreen(GameScreen aScreen, EditableButton aButton)
+        {
+            var serializer = new XmlSerializer(typeof(EditableButton));
+            XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+            ns.Add("", "");
+
+            using (var writer = new StreamWriter(m_ScreenRootDirectory + aScreen.GetType().Name.ToString() + ".xml"))
+            using (var xmlWriter = XmlWriter.Create(writer, new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true }))
+            {
+                serializer.Serialize(xmlWriter, aButton, ns);
+            }
         }
 
         private static string GetFieldNameAndValue(FieldInfo aField, object aObj)
