@@ -40,6 +40,20 @@ namespace TestCase
             SetUpButtonData();
         }
 
+        public void LoadSerializedData(SerializedData aSerializedData)
+        {
+            ButtonData = aSerializedData;
+            ApplySerializedData();
+        }
+
+        private void ApplySerializedData()
+        {
+            m_CreateButton.SizeX = (int)ButtonData.Size.X;
+            m_CreateButton.SizeY = (int)ButtonData.Size.Y;
+            m_CreateButton.PositionX = (int)ButtonData.Position.X;
+            m_CreateButton.PositionY = (int)ButtonData.Position.Y;
+        }
+
         public void Update()
         {
             //CREATE OR DELETE RESSOURCES WITH THE TOGGLE BUTTON

@@ -56,16 +56,16 @@ namespace TestCase
                     continue;
                 }
 
-                if(m_ButtonSaved[i].m_Button != aButton)
-                {
-                    continue;
-                }
-
                 aIndex = i;
                 return true;
             }
 
             return false;
+        }
+
+        public static EditableButton GetButtonAtIndex(int aIndex)
+        {
+           return m_ButtonSaved[aIndex].m_Button;
         }
 
         public static List<EditableButton> GetAllButtonInScreen(GameScreen aGameScreen)

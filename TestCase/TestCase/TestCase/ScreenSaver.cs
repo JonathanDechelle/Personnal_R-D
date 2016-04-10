@@ -29,6 +29,10 @@ namespace TestCase
         public static void SaveScreenContent(GameScreen aScreen)
         {
             SerializeScreen(aScreen, EditorManager.GetAllButtonInScreen(aScreen));
+        }
+
+        public static void LoadScreenContent(GameScreen aScreen)
+        {
             DeSerializeScreen(aScreen);
         }
 
@@ -52,6 +56,17 @@ namespace TestCase
             List<EditableButton> screenButtons;
             using (var reader = new StreamReader(GetScreenPath(aScreen)))
                 screenButtons = (List<EditableButton>)serializer.Deserialize(reader);
+
+            int index = -1;
+            for (int i = 0; i < screenButtons.Count; i++)
+            {
+                EditableButton serializedButton = screenButtons[i];
+                if (EditorManager.ContainButton(screenButtons[i], aScreen,out index))
+                {
+                    EditableButton buttonInGame = EditorManager.GetButtonAtIndex(index);
+                    buttonInGame.LoadSerializedData(serializedButton.ButtonData);
+                }
+            }
         }
 
         private static string GetScreenPath(GameScreen aScreen)
