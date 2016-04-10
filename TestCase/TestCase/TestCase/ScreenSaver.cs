@@ -43,10 +43,5 @@ namespace TestCase
                 serializer.Serialize(xmlWriter, aButtons, ns);
             }
         }
-
-        private static string GetFieldNameAndValue(FieldInfo aField, object aObj)
-        {
-            return aField.Name + " " + aField.GetValue(aObj) + "\r\n";
-        }
     }
 }
