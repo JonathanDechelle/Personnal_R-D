@@ -21,12 +21,12 @@ namespace TestCase
             m_SpriteFont = aContent.Load<SpriteFont>("Font");
 
 
-            #region GameRessourcesManager
+            #region EditorManager
             Type myType = typeof(GameRessources);
             FieldInfo[] myField = myType.GetFields();
 
-            GameRessourcesManager.RegisterTexture(m_EmptyButton, myField[1].Name);
-            GameRessourcesManager.RegisterTexture(m_EmptyTextField, myField[2].Name);
+            EditorManager.RegisterTexture(m_EmptyButton, myField[1].Name);
+            EditorManager.RegisterTexture(m_EmptyTextField, myField[2].Name);
             #endregion
         }
     }

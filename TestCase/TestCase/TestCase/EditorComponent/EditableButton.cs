@@ -78,7 +78,7 @@ namespace TestCase
 
             if (aUpdateOnceTexture)
             {
-                ButtonData.TextureName = GameRessourcesManager.GetVariableName(m_CreateButton.m_Texture);
+                ButtonData.TextureName = EditorManager.GetVariableName(m_CreateButton.m_Texture);
             }
         }
 
