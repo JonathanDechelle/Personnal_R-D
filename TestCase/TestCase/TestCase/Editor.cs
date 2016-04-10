@@ -17,7 +17,6 @@ namespace TestCase
         GraphicsDeviceManager m_Graphics;
         SpriteBatch m_SpriteBatch;
 
-        EGameState m_CurrentGameState;
         StateMachine m_StateMachine;
 
         protected override void Initialize()
