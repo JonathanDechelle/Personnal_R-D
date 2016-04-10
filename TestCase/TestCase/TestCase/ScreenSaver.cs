@@ -28,31 +28,19 @@ namespace TestCase
 
         public static void SaveScreenContent(GameScreen aScreen)
         {
-            List<EditableButton> buttons = EditorManager.GetAllButtonInScreen(aScreen);
-
-            string Text = "";
-            for (int i = 0; i < buttons.Count; i++)
-            {
-                SerializeScreen(aScreen, buttons[i]);
-                /*
-                FieldInfo[] fields = buttons[i].GetType().GetFields(m_BindingFlags);
-                for (int j = 0; j < fields.Length; j++)
-                {
-                    Text += GetFieldNameAndValue(fields[j], buttons[i]);
-                }*/
-            }
+            SerializeScreen(aScreen, EditorManager.GetAllButtonInScreen(aScreen));
         }
 
-        private static void SerializeScreen(GameScreen aScreen, EditableButton aButton)
+        private static void SerializeScreen(GameScreen aScreen, List<EditableButton> aButtons)
         {
-            var serializer = new XmlSerializer(typeof(EditableButton));
+            var serializer = new XmlSerializer(typeof(List<EditableButton>));
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("", "");
 
             using (var writer = new StreamWriter(m_ScreenRootDirectory + aScreen.GetType().Name.ToString() + ".xml"))
             using (var xmlWriter = XmlWriter.Create(writer, new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true }))
             {
-                serializer.Serialize(xmlWriter, aButton, ns);
+                serializer.Serialize(xmlWriter, aButtons, ns);
             }
         }
 
