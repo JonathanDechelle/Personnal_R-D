@@ -31,6 +31,14 @@ namespace MyGameLibrairy
         private const int CONTOUR_SIZE = 3;
 
         #region get set
+        public Texture2D m_Texture
+        {
+            get
+            {
+                return m_OriginalTexture;
+            }
+        }
+
         public Vector2 m_Position
         {
             get

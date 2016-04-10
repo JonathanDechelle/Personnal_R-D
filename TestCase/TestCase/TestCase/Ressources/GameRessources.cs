@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Reflection;
 
 namespace TestCase
 {
@@ -18,6 +19,15 @@ namespace TestCase
             m_EmptyButton = aContent.Load<Texture2D>("EmptyButton");
             m_EmptyTextField = aContent.Load<Texture2D>("EmptyTextField");
             m_SpriteFont = aContent.Load<SpriteFont>("Font");
+
+
+            #region GameRessourcesManager
+            Type myType = typeof(GameRessources);
+            FieldInfo[] myField = myType.GetFields();
+
+            GameRessourcesManager.RegisterTexture(m_EmptyButton, myField[1].Name);
+            GameRessourcesManager.RegisterTexture(m_EmptyTextField, myField[2].Name);
+            #endregion
         }
     }
 }

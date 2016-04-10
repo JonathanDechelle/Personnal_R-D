@@ -15,6 +15,7 @@ namespace TestCase
         {
             public Vector2 Position;
             public Vector2 Size;
+            public string TextureName;
 
             public SerializedData(){}
         }
@@ -36,9 +37,7 @@ namespace TestCase
                aPosition,
                aGraphicDevice);
 
-            ButtonData = new SerializedData();
-            ButtonData.Size = m_CreateButton.m_Size;
-            ButtonData.Position = m_CreateButton.m_Position;
+            SetUpButtonData();
         }
 
         public void Update()
@@ -63,9 +62,24 @@ namespace TestCase
                 m_ButtonInfo.Update();
             }
 
-            m_CreateButton.Update(hasButtonInfo);
+            m_CreateButton.Update(hasButtonInfo); 
+            SetUpButtonData(false);
+        }
+
+        private void SetUpButtonData(bool aUpdateOnceTexture = true)
+        {
+            if (ButtonData == null)
+            {
+                ButtonData = new SerializedData();
+            }
+
             ButtonData.Size = m_CreateButton.m_Size;
             ButtonData.Position = m_CreateButton.m_Position;
+
+            if (aUpdateOnceTexture)
+            {
+                ButtonData.TextureName = GameRessourcesManager.GetVariableName(m_CreateButton.m_Texture);
+            }
         }
 
         public void Draw(SpriteBatch aSpritebatch)

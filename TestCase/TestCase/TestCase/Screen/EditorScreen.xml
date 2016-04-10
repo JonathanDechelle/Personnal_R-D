@@ -1,12 +1,15 @@
-<EditableButton>
-  <ButtonData>
-    <Position>
-      <X>100</X>
-      <Y>100</Y>
-    </Position>
-    <Size>
-      <X>256</X>
-      <Y>256</Y>
-    </Size>
-  </ButtonData>
-</EditableButton>
+<ArrayOfEditableButton>
+  <EditableButton>
+    <ButtonData>
+      <Position>
+        <X>100</X>
+        <Y>100</Y>
+      </Position>
+      <Size>
+        <X>256</X>
+        <Y>256</Y>
+      </Size>
+      <TextureName>m_EmptyButton</TextureName>
+    </ButtonData>
+  </EditableButton>
+</ArrayOfEditableButton>
