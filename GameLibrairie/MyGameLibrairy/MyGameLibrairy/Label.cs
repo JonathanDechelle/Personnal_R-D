@@ -18,9 +18,11 @@ namespace MyGameLibrairy
         private string m_Text;
         private Color m_Color;
         private Color m_InvertedColor;
-        
+
         public Vector2 m_Position;
         public bool m_IsSelected;
+        public bool m_LastIsSelected;
+        public bool m_AutomaticErase;
         private bool m_IsNumericLabel = true;
         private SpriteFont m_Font;
 
@@ -49,24 +51,40 @@ namespace MyGameLibrairy
             if (m_IsSelected)
             {
                 Keys[] keys = KeyboardHelper.KeyPressed();
+
                 string newKey;
                 int number;
                 bool result;
                 for (int i = 0; i < keys.Length; i++)
                 {
                     newKey = keys[i].ToString();
+                    newKey = newKey.Replace("NumPad", "");
                     newKey = newKey.Replace("D", "");
                     result = Int32.TryParse(newKey,out number);
                     if (result)
                     {
+                        if (i == 0 && m_AutomaticErase)
+                        {
+                            m_AutomaticErase = false;
+                            m_Text = "";
+                        }
+
                         m_Text += newKey;
                     }
                     else if (newKey == "Back" && m_Text.Length > 0)
                     {
                        m_Text = m_Text.Remove(m_Text.Length - 1, 1);
+                       m_AutomaticErase = false;
                     }
                 }
             }
+
+            if (m_LastIsSelected != m_IsSelected)
+            {
+                m_AutomaticErase = true;
+            }
+
+            m_LastIsSelected = m_IsSelected;
         }
 
         public int GetNumericValue()
