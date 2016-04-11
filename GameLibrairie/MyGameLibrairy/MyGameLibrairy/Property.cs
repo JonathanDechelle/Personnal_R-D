@@ -49,6 +49,16 @@ namespace MyGameLibrairy
             m_ValueLabel.Update();
         }
 
+        public void SetToggleActive(bool aActive)
+        {
+            m_ValueContainer.m_IsToggleActive = aActive;
+        }
+
+        public bool GetToggleActivity()
+        {
+            return m_ValueContainer.m_IsToggleActive;
+        }
+
         public int GetLabelValue()
         {
             return m_ValueLabel.GetNumericValue();
