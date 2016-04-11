@@ -50,6 +50,7 @@ namespace TestCase
         {
             GameScreen editorScreen = GameScreenManager.ShowScreen(GameScreenMapper.GetValue(EGameState.Editor), GraphicsDevice);
             ScreenSaver.LoadScreenContent(editorScreen);
+            ScreenSaver.SaveScreenContent(editorScreen);
         }
 
         protected override void Update(GameTime gameTime)

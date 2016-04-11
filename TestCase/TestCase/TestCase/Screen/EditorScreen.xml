@@ -3,11 +3,11 @@
     <ButtonData>
       <Position>
         <X>199</X>
-        <Y>50</Y>
+        <Y>100</Y>
       </Position>
       <Size>
-        <X>50</X>
-        <Y>25</Y>
+        <X>300</X>
+        <Y>300</Y>
       </Size>
       <TextureName>m_EmptyButton</TextureName>
     </ButtonData>
